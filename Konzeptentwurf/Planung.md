@@ -5,16 +5,16 @@
 ### Modelle
 - User
 - Company
-- Job
+- jobListing
 - Category
 (-Application nur geplant, nicht umgesetzt)
 
 ### Beziehungen
-- User < --- > Company      1 : n (Ein User kann mehrere Companies besitzen)    User hasMany companies
-- Company < --- > Job       1 : n (Eine Company kann mehrere Jobs haben)        Company hasMany jobs
-- Category < --- > Job      1 : n (Eine Category kann mehrere Jobs haben)       Category hasMany jobs            
-- Job < --- >  Company      1 job gehört zu einer Firma                         Job belongsTo company
-- Job < --- >  Category     1 job gehört zu einer Kategorie                     Job belongsTo category
+- User < --- > Company              1 : n (Ein User kann mehrere Companies besitzen)     User hasMany companies
+- Company < --- > jobListing        1 : n (Eine Company kann mehrere Jobs haben)         Company hasMany jobs
+- Category < --- > jobListing       1 : n (Eine Category kann mehrere Jobs haben)        Category hasMany jobs            
+- jobListing  < --- >  Company      1 job gehört zu einer Firma                          jobListing belongsTo company
+- jobListing  < --- >  Category     1 job gehört zu einer Kategorie                      jobListing belongsTo category                
 
 ### Benutzerrollen
 - admin: Vollzugriff auf alle Modelle und Funktionen
@@ -55,7 +55,7 @@
 | created_at  | TIMESTAMP    | Erstelldatum                  |
 | updated_at  | TIMESTAMP    | Änderungsdatum                |
 
-### `job`
+### `jobListing`
 | Spalte      | Typ          | Beschreibung                  |
 |-------------|--------------|-------------------------------|
 | id          | INT, PK      | Eindeutige Job-ID             |
@@ -91,10 +91,10 @@
 - `/companies/{id}/edit` → Bearbeiten
 
 ### Job
-- `/jobs` → Listenansicht
-- `/jobs/{id}` → Detailansicht
-- `/jobs/create` → Erstellen
-- `/jobs/{id}/edit` → Bearbeiten
+- `/jobListings` → Listenansicht
+- `/jobListings/{id}` → Detailansicht
+- `/jobListings/create` → Erstellen
+- `/jobListings/{id}/edit` → Bearbeiten
 
 ### Category
 - `/categories` → Listenansicht
