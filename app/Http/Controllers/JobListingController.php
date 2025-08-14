@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreJobListingRequest;
 use App\Http\Requests\UpdateJobListingRequest;
 use App\Models\JobListing;
+use App\Models\Company;
+use App\Models\Category;
 
 class JobListingController extends Controller
 {
@@ -13,7 +15,8 @@ class JobListingController extends Controller
      */
     public function index()
     {
-        //
+        $jobListings = JobListing::with(['company', 'category'])->get();
+        return view('job-listings.index', compact('jobListings'));
     }
 
     /**
@@ -21,7 +24,9 @@ class JobListingController extends Controller
      */
     public function create()
     {
-        //
+        $companies = Company::all();
+        $categories = Category::all();
+        return view('job-listings.create', compact('companies', 'categories'));
     }
 
     /**
@@ -29,7 +34,8 @@ class JobListingController extends Controller
      */
     public function store(StoreJobListingRequest $request)
     {
-        //
+        JobListing::create($request->validated());
+        return redirect('/jobListings')->with('success', 'Stellenanzeige erfolgreich erstellt');
     }
 
     /**
@@ -37,7 +43,7 @@ class JobListingController extends Controller
      */
     public function show(JobListing $jobListing)
     {
-        //
+        return view('job-listings.show', compact('jobListing'));
     }
 
     /**
@@ -45,7 +51,9 @@ class JobListingController extends Controller
      */
     public function edit(JobListing $jobListing)
     {
-        //
+        $companies = Company::all();
+        $categories = Category::all();
+        return view('job-listings.edit', compact('jobListing', 'companies', 'categories'));
     }
 
     /**
@@ -53,7 +61,8 @@ class JobListingController extends Controller
      */
     public function update(UpdateJobListingRequest $request, JobListing $jobListing)
     {
-        //
+        $jobListing->update($request->validated());
+        return redirect('/jobListings')->with('success', 'Stellenanzeige erfolgreich aktualisiert');
     }
 
     /**
@@ -61,6 +70,7 @@ class JobListingController extends Controller
      */
     public function destroy(JobListing $jobListing)
     {
-        //
+        $jobListing->delete();
+        return redirect('/jobListings')->with('success', 'Stellenanzeige erfolgreich gelöscht');
     }
 }

@@ -13,7 +13,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -21,7 +22,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.create');
     }
 
     /**
@@ -29,7 +30,11 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $validated['password'] = bcrypt($validated['password']);
+        
+        User::create($validated);
+        return redirect('/users')->with('success', 'User erfolgreich erstellt');
     }
 
     /**
@@ -37,7 +42,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return view('users.show', compact('user'));
     }
 
     /**
@@ -45,7 +50,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('users.edit', compact('user'));
     }
 
     /**
@@ -53,7 +58,17 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $validated = $request->validated();
+        
+        // password is changed
+        if (isset($validated['password']) && !empty($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            unset($validated['password']); // password is not changed
+        }
+        
+        $user->update($validated);
+        return redirect('/users')->with('success', 'User erfolgreich aktualisiert');
     }
 
     /**
@@ -61,6 +76,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect('/users')->with('success', 'User erfolgreich gelöscht');
     }
 }

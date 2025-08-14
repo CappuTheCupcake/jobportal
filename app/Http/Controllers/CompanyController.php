@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Company;
+use App\Models\User;
 
 class CompanyController extends Controller
 {
@@ -13,7 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $companies = Company::all();
+        return view('companies.index', compact('companies'));
     }
 
     /**
@@ -21,7 +23,8 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        return view('companies.create', compact('users'));
     }
 
     /**
@@ -29,7 +32,8 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
-        //
+        Company::create($request->validated());
+        return redirect('/companies')->with('success', 'Firma erfolgreich erstellt');
     }
 
     /**
@@ -37,7 +41,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
+        return view('companies.show', compact('company'));
     }
 
     /**
@@ -45,7 +49,8 @@ class CompanyController extends Controller
      */
     public function edit(Company $company)
     {
-        //
+        $users = User::all();
+        return view('companies.edit', compact('company', 'users'));
     }
 
     /**
@@ -53,7 +58,8 @@ class CompanyController extends Controller
      */
     public function update(UpdateCompanyRequest $request, Company $company)
     {
-        //
+        $company->update($request->validated());
+        return redirect('/companies')->with('success', 'Firma erfolgreich aktualisiert');
     }
 
     /**
@@ -61,6 +67,7 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        $company->delete();
+        return redirect('/companies')->with('success', 'Firma erfolgreich gelöscht');
     }
 }
